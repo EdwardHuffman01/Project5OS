@@ -79,17 +79,17 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
         }
 
-        int time_quantum = atoi(argv[3]);
+        u_int time_quantum = atoi(argv[3]);
         if (time_quantum <= 0) {
         fprintf(stderr, "time_quantum must be a positive integer\n");
         return EXIT_FAILURE;
         }
 
-        rr(task_array, count, time_quantum);
+        rr(task_array, count, time_quantum, file_name);
     }
 
     else if(strcmp(argv[2], "SRTF") == 0) {
-        srtf(task_array, count);
+        srtf(task_array, count, file_name);
     }
 
     else{

@@ -21,7 +21,7 @@ typedef struct task_info {
 } task_t;
 
 void fcfs(task_t *task_array, u_int count, const char *file_name);
-void rr(task_t *task_array, u_int count, int time_quantum);
-void srtf(task_t *task_array, u_int count);
+void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_name);
+void srtf(task_t *task_array, u_int count, const char *file_name);
 
 #endif
