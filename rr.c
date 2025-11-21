@@ -79,9 +79,9 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
         }
 
         if (queue_size == 0) {
+            printf("<time %u> No process avaliable, idling...\n", time);
             idle_time += task_array[next_avaliable].arrival_time - time;
             time = task_array[next_avaliable].arrival_time;
-            printf("<time %u> No process avaliable, idling...\n", time);
             continue;
         }
 
@@ -104,13 +104,13 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
                 printf("<time %u> process %u is running\n", time, task->pid);
                 remaining_burst[i]--;
                 cpu_time++;
+                time++;
             }
             if (remaining_burst[i] == 0) {
                 printf("<time %u> process %u is finished...\n", time, task->pid);
                 finish_count++;
                 total_turn += time - task->arrival_time;
                 total_wait += time - task->arrival_time - task->burst_time;
-                                time++;
 
             }
             else{
