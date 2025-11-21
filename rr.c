@@ -95,16 +95,17 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
                 //execution_time[i]++;
                 printf("<time %u> process %u is running\n", time, task->pid);
                 remaining_burst[i]--;
-                time++;
                 cpu_time++;
+                time++;
                 }
                 if (remaining_burst[i] == 0) {
-                    printf("<time %u> process %u is finished...\n", time, task->pid);
+                    printf("<time %u> process %u is finished...\n", time - 1, task->pid);
                     finish_count++;
 
-                    total_turn += time - task->arrival_time;
-                    total_wait += time - task->arrival_time - task->burst_time;
+                    total_turn += (time - 1) - task->arrival_time;
+                    total_wait += (time - 1) - task->arrival_time - task->burst_time;
                 }
+                
             }
 
         //  wait_time[i] += time - wait_time[i];
