@@ -14,7 +14,7 @@ int main(void) {
     tasks[1].burst_time = 5;
 
     tasks[2].pid = 3;
-    tasks[0].arrival_time = 8;
+    tasks[2].arrival_time = 8;
     tasks[2].burst_time = 2;
 
     unsigned int time_quantum = 2;

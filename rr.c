@@ -56,7 +56,7 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
     
     print_header(count, file_name, 2);
 
-    if(time_quantum <= 0){
+    if(time_quantum == 0){
         printf("\nTime quantum must be greater than zero.\n\n");
         return;
     }
@@ -70,17 +70,17 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
 
     while (finish_count < count) {
 
-      while (next_avaliable < count &&
-             task[next_avaliable].arrival_time <= time) {
-            tail = (tail + 1) % count;
+      while (next_avaliable < count && task_array[next_avaliable].arrival_time <= time) {
             ready[tail] = next_avaliable;
+            tail = (tail + 1) % count;
             queue_size++;
             next_avaliable++;
-        } 
+            //printf("Made it into queue!\n");
+        }
 
         if (queue_size == 0) {
-            idle_time += task[next_avaliable].arrival_time - time;
-            time = task[next_avaliable].arrival_time;
+            idle_time += task_array[next_avaliable].arrival_time - time;
+            time = task_array[next_avaliable].arrival_time;
             printf("<time %u> No process avaliable, idling...\n", time);
             continue;
         }
@@ -89,7 +89,7 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
         head = (head + 1) % count;
         queue_size--;
 
-        task = 
+        task = &task_array[i];
         
         if(remaining_burst[i] != 0){
 
@@ -100,26 +100,30 @@ void rr(task_t *task_array, u_int count, u_int time_quantum, const char *file_na
             }
           
             for(u_int j = 0; j < time_quantum && remaining_burst[i] != 0; j++){
-                //execution_time[i]++;
+              // execution_time[i]++;
                 printf("<time %u> process %u is running\n", time, task->pid);
                 remaining_burst[i]--;
-                time++;
                 cpu_time++;
-                }
-                if (remaining_burst[i] == 0) {
-                    printf("<time %u> process %u is finished...\n", time, task->pid);
-                    finish_count++;
-
-                    total_turn += time - task->arrival_time;
-                    total_wait += time - task->arrival_time - task->burst_time;
-                }
             }
+            if (remaining_burst[i] == 0) {
+                printf("<time %u> process %u is finished...\n", time, task->pid);
+                finish_count++;
+                total_turn += time - task->arrival_time;
+                total_wait += time - task->arrival_time - task->burst_time;
+                                time++;
 
-        //  wait_time[i] += time - wait_time[i];
+            }
+            else{
+                ready[tail] = i;
+                tail = (tail + 1) % count;
+                queue_size++;
+            }
+        }
 
 
-            i++;
-            not_ready = 0;
+
+
+            
     }
 
     print_footer(total_turn, total_wait,total_resp, cpu_time, idle_time, count, time);
